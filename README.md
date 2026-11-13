@@ -41,3 +41,7 @@ Use Node.js 22 or 24.
 5. Check formatting: `npx prettier --check .`
 
 The first `npm install` creates `package-lock.json` if it is not present. Commit that file so future installs use the same dependency versions.
+
+## Live Demo
+
+[Open the Week 7 To-Do List](https://josphinemoraa.github.io/iyf-s12-week-07-JosphineMoraa/)
