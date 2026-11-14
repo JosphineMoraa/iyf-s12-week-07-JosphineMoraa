@@ -25,6 +25,16 @@ Refactor the Week 5 To-Do List into small JavaScript modules, persist tasks and 
 - Handle missing, malformed, or partly invalid saved data without crashing.
 - Keep pure task logic separate from DOM manipulation.
 
+- ## How to run
+
+```bash
+npm install
+npm test
+npm run lint
+```
+
+Open `index.html` with VS Code Live Server to use the app.
+
 ## Shopping Cart
 Open `cart/index.html` from the repository to view the Lesson 13 cart exercise. Add products, increase quantities, remove items, and view the running total.
 
