@@ -29,7 +29,7 @@ Refactor the Week 5 To-Do List into small JavaScript modules, persist tasks and 
 Open `cart/index.html` from the repository to view the Lesson 13 cart exercise. Add products, increase quantities, remove items, and view the running total.
 
 ## Daily challenges
-Five async JavaScript practice files are in `daily-challenges/`. Run them individually with Node.js.
+Five async JavaScript practice files are in `daily-challenges/`. Run them individually with Node.js.**PR I opened:****PR I opened:**
 
 ## Setup and checks
 Use Node.js 22 or 24.
@@ -47,5 +47,5 @@ The first `npm install` creates `package-lock.json` if it is not present. Commit
 [Open the Week 7 To-Do List](https://josphinemoraa.github.io/iyf-s12-week-07-JosphineMoraa/)
 
 **PR I opened:** https://github.com/JosphineMoraa/iyf-s12-week-07-JosphineMoraa/pulls?q=is%3Apr+state%3Aclosed
-**PR I closed:**
+**PR I closed:** **
 
