@@ -1,1 +1,37 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lesson 13 Shopping Cart</title><link rel="stylesheet" href="styles.css"><script type="module" src="cart.js"></script></head><body><main class="cart"><p><a href="../index.html">← Back to To-Do List</a></p><h1>Lesson 13 Shopping Cart</h1><section><h2>Products</h2><ul id="products"></ul></section><section><h2>Your cart</h2><ul id="cart-items"></ul><p id="total">Total: KSh 0.00</p></section></main></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A simple shopping cart demonstrating JavaScript state and Local Storage." />
+    <title>Lesson 13 | Shopping Cart</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="cart.js"></script>
+  </head>
+  <body>
+    <main class="cart">
+      <p><a href="../index.html">← Back to To-Do List</a></p>
+      <header class="page-header">
+        <p class="eyebrow">Week 7 · Lesson 13</p>
+        <h1>Shopping Cart</h1>
+        <p>Add products, update quantities, and refresh the page — your cart will be saved.</p>
+      </header>
+
+      <section aria-labelledby="products-heading">
+        <h2 id="products-heading">Available products</h2>
+        <ul id="products" class="item-list"></ul>
+      </section>
+
+      <section aria-labelledby="cart-heading">
+        <div class="section-heading">
+          <h2 id="cart-heading">Your cart</h2>
+          <button id="clear-cart" class="button button-secondary" type="button">Clear cart</button>
+        </div>
+        <p id="empty-message" class="empty-message">Your cart is empty. Add a product to get started.</p>
+        <ul id="cart-items" class="item-list" aria-live="polite"></ul>
+        <p id="total" class="total" aria-live="polite">Total: KSh 0.00</p>
+        <p id="cart-status" class="status" role="status" aria-live="polite"></p>
+      </section>
+    </main>
+  </body>
+</html>
