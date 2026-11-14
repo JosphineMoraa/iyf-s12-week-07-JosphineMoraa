@@ -1,1 +1,78 @@
-body{margin:0;padding:2rem 1rem;font-family:system-ui,sans-serif;color:#172033;background:#f2f6fb}.cart{width:min(100%,640px);margin:auto}section{margin:1.5rem 0;padding:1rem;border:1px solid #d7e0eb;border-radius:12px;background:white}li{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin:.6rem 0}button{padding:.5rem .8rem;border:0;border-radius:8px;color:white;background:#1769aa;cursor:pointer}
+:root {
+  color-scheme: light;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #172033;
+  background: #f3f6fb;
+  font-synthesis: none;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+
+.cart { width: min(100%, 720px); margin: 0 auto; }
+
+a { color: #1769aa; font-weight: 600; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.page-header { margin: 2rem 0; }
+.eyebrow { color: #1769aa; font-size: .8rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+h1 { margin: .35rem 0; font-size: clamp(2rem, 5vw, 3rem); }
+.page-header > p:last-child { color: #5b6678; line-height: 1.6; }
+
+section {
+  margin: 1.25rem 0;
+  padding: 1.25rem;
+  border: 1px solid #dce4ef;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgb(23 32 51 / 5%);
+}
+
+h2 { margin: 0; font-size: 1.2rem; }
+.section-heading, .item-row, .item-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.item-list { display: grid; gap: .75rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+.item-row { padding: .85rem; border: 1px solid #e7edf5; border-radius: 12px; }
+.item-name { font-weight: 700; }
+.item-price, .item-subtotal { color: #5b6678; font-size: .92rem; }
+.item-actions { flex-wrap: wrap; justify-content: flex-end; }
+.quantity { min-width: 2rem; text-align: center; font-weight: 700; }
+
+button {
+  min-height: 38px;
+  padding: .5rem .8rem;
+  border: 0;
+  border-radius: 9px;
+  color: #fff;
+  background: #1769aa;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+button:hover { filter: brightness(.92); }
+button:focus-visible, a:focus-visible { outline: 3px solid #f2b84b; outline-offset: 3px; }
+button:disabled { cursor: not-allowed; opacity: .45; }
+.button-secondary { color: #344054; background: #e9eef5; }
+.button-danger { background: #b42318; }
+.button-small { min-width: 38px; padding-inline: .65rem; }
+
+.total { margin: 1.25rem 0 0; padding-top: 1rem; border-top: 1px solid #e7edf5; font-size: 1.25rem; font-weight: 800; text-align: right; }
+.empty-message, .status { color: #667085; line-height: 1.5; }
+.status { min-height: 1.2em; margin-bottom: 0; font-size: .9rem; }
+
+@media (max-width: 520px) {
+  body { padding: 1.25rem .75rem; }
+  section { padding: 1rem; }
+  .item-row { align-items: flex-start; flex-direction: column; }
+  .item-actions { width: 100%; justify-content: flex-start; }
+}
