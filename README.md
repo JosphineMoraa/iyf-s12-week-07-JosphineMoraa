@@ -29,7 +29,7 @@ Refactor the Week 5 To-Do List into small JavaScript modules, persist tasks and 
 Open `cart/index.html` from the repository to view the Lesson 13 cart exercise. Add products, increase quantities, remove items, and view the running total.
 
 ## Daily challenges
-Five async JavaScript practice files are in `daily-challenges/`. Run them individually with Node.js.**PR I opened:****PR I opened:**
+Five async JavaScript practice files are in `daily-challenges/`. Run them individually with Node.js.
 
 ## Setup and checks
 Use Node.js 22 or 24.
