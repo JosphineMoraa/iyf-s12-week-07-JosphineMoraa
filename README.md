@@ -46,5 +46,6 @@ The first `npm install` creates `package-lock.json` if it is not present. Commit
 
 [Open the Week 7 To-Do List](https://josphinemoraa.github.io/iyf-s12-week-07-JosphineMoraa/)
 
-**PR I opened:** 
+**PR I opened:** https://github.com/JosphineMoraa/iyf-s12-week-07-JosphineMoraa/pulls?q=is%3Apr+state%3Aclosed
+**PR I closed:**
 
