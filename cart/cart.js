@@ -1,7 +1,8 @@
+// Fixed products from the course exercise. Only cart quantities are stored.
 const PRODUCTS = [
-  { id: 1, name: "Notebook", price: 150 },
-  { id: 2, name: "Pen", price: 50 },
-  { id: 3, name: "Water bottle", price: 450 },
+  { id: 1, name: "Mandazi (pack of 6)", price: 120 },
+  { id: 2, name: "Chapati (pack of 5)", price: 150 },
+  { id: 3, name: "Tea leaves 250g", price: 180 },
 ];
 
 const STORAGE_KEY = "week7-shopping-cart";
