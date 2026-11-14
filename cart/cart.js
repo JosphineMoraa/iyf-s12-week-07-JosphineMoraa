@@ -1,11 +1,13 @@
-// Fixed products from the course exercise. Only cart quantities are stored.
-const PRODUCTS = [
-  { id: 1, name: "Mandazi (pack of 6)", price: 120 },
-  { id: 2, name: "Chapati (pack of 5)", price: 150 },
-  { id: 3, name: "Tea leaves 250g", price: 180 },
-];
-
 const STORAGE_KEY = "week7-shopping-cart";
+
+const state = {
+  products: [
+    { id: 1, name: "Mandazi (pack of 6)", price: 120 },
+    { id: 2, name: "Chapati (pack of 5)", price: 150 },
+    { id: 3, name: "Tea leaves 250g", price: 180 },
+  ],
+  cart: [], // { productId, quantity } — only the cart is saved; products are fixed
+};
 
 const productsList = document.querySelector("#products");
 const cartList = document.querySelector("#cart-items");
@@ -20,29 +22,27 @@ function loadCart() {
 
     if (!Array.isArray(savedCart)) return [];
 
-    return savedCart
-      .filter((item) => {
-        const product = PRODUCTS.find((candidate) => candidate.id === item.id);
-        return product && Number.isInteger(item.quantity) && item.quantity > 0;
-      })
-      .map((item) => {
-        const product = PRODUCTS.find((candidate) => candidate.id === item.id);
-        return { ...product, quantity: item.quantity };
-      });
+    return savedCart.filter((item) => {
+      const productExists = state.products.some(
+        (product) => product.id === item.productId,
+      );
+
+      return (
+        productExists &&
+        Number.isInteger(item.quantity) &&
+        item.quantity > 0
+      );
+    });
   } catch {
     localStorage.removeItem(STORAGE_KEY);
     return [];
   }
 }
 
-let cart = loadCart();
-
 function saveCart() {
   try {
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(cart.map(({ id, quantity }) => ({ id, quantity }))),
-    );
+    // Save only product IDs and quantities, never the fixed product catalogue.
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state.cart));
   } catch {
     statusElement.textContent = "Your cart could not be saved in this browser.";
   }
@@ -62,37 +62,16 @@ function createButton(label, className, onClick, accessibleLabel = label) {
   return button;
 }
 
-function renderProducts() {
-  productsList.replaceChildren();
-
-  PRODUCTS.forEach((product) => {
-    const item = document.createElement("li");
-    item.className = "item-row";
-
-    const details = document.createElement("div");
-    const name = document.createElement("span");
-    const price = document.createElement("p");
-    name.className = "item-name";
-    name.textContent = product.name;
-    price.className = "item-price";
-    price.textContent = formatPrice(product.price);
-    details.append(name, price);
-
-    const addButton = createButton("Add to cart", "", () => addToCart(product.id));
-    item.append(details, addButton);
-    productsList.append(item);
-  });
-}
-
 function addToCart(productId) {
-  const product = PRODUCTS.find((item) => item.id === productId);
+  const product = state.products.find((item) => item.id === productId);
   if (!product) return;
 
-  const existingItem = cart.find((item) => item.id === productId);
-  if (existingItem) {
-    existingItem.quantity += 1;
+  const existing = state.cart.find((item) => item.productId === productId);
+
+  if (existing) {
+    existing.quantity++;
   } else {
-    cart.push({ ...product, quantity: 1 });
+    state.cart.push({ productId, quantity: 1 });
   }
 
   saveCart();
@@ -100,77 +79,141 @@ function addToCart(productId) {
   statusElement.textContent = `${product.name} added to your cart.`;
 }
 
-function changeQuantity(productId, change) {
-  const item = cart.find((cartItem) => cartItem.id === productId);
-  if (!item) return;
+function updateQuantity(productId, quantity) {
+  if (!Number.isInteger(quantity) || quantity < 0) return;
 
-  item.quantity += change;
-  if (item.quantity <= 0) {
-    cart = cart.filter((cartItem) => cartItem.id !== productId);
+  if (quantity === 0) {
+    removeFromCart(productId);
+    return;
   }
 
+  const item = state.cart.find((entry) => entry.productId === productId);
+  if (!item) return;
+
+  item.quantity = quantity;
   saveCart();
   renderCart();
+  statusElement.textContent = "Cart quantity updated.";
 }
 
 function removeFromCart(productId) {
-  cart = cart.filter((item) => item.id !== productId);
+  state.cart = state.cart.filter((item) => item.productId !== productId);
   saveCart();
   renderCart();
   statusElement.textContent = "Product removed from your cart.";
 }
 
-function clearCart() {
-  if (cart.length === 0) return;
-  cart = [];
-  saveCart();
-  renderCart();
-  statusElement.textContent = "Your cart has been cleared.";
+function getCartTotal() {
+  return state.cart.reduce((total, item) => {
+    const product = state.products.find((p) => p.id === item.productId);
+    return product ? total + product.price * item.quantity : total;
+  }, 0);
+}
+
+function getCartCount() {
+  return state.cart.reduce((count, item) => count + item.quantity, 0);
+}
+
+function renderProducts() {
+  productsList.replaceChildren();
+
+  state.products.forEach((product) => {
+    const item = document.createElement("li");
+    item.className = "item-row";
+
+    const details = document.createElement("div");
+    const name = document.createElement("span");
+    const price = document.createElement("p");
+
+    name.className = "item-name";
+    name.textContent = product.name;
+    price.className = "item-price";
+    price.textContent = formatPrice(product.price);
+    details.append(name, price);
+
+    const addButton = createButton("Add to cart", "", () =>
+      addToCart(product.id),
+    );
+
+    item.append(details, addButton);
+    productsList.append(item);
+  });
 }
 
 function renderCart() {
   cartList.replaceChildren();
-  emptyMessage.hidden = cart.length > 0;
-  clearCartButton.disabled = cart.length === 0;
+  emptyMessage.hidden = state.cart.length > 0;
+  clearCartButton.disabled = state.cart.length === 0;
 
-  cart.forEach((item) => {
+  state.cart.forEach((cartItem) => {
+    const product = state.products.find(
+      (item) => item.id === cartItem.productId,
+    );
+    if (!product) return;
+
     const row = document.createElement("li");
     row.className = "item-row";
 
     const details = document.createElement("div");
     const name = document.createElement("span");
     const subtotal = document.createElement("p");
+
     name.className = "item-name";
-    name.textContent = item.name;
+    name.textContent = product.name;
     subtotal.className = "item-subtotal";
-    subtotal.textContent = `${formatPrice(item.price)} each · Subtotal: ${formatPrice(item.price * item.quantity)}`;
+    subtotal.textContent = `${formatPrice(product.price)} each · Subtotal: ${formatPrice(product.price * cartItem.quantity)}`;
     details.append(name, subtotal);
 
     const actions = document.createElement("div");
     actions.className = "item-actions";
+
     actions.append(
-      createButton("−", "button-small button-secondary", () => changeQuantity(item.id, -1), `Decrease ${item.name} quantity`),
+      createButton(
+        "−",
+        "button-small button-secondary",
+        () => updateQuantity(product.id, cartItem.quantity - 1),
+        `Decrease ${product.name} quantity`,
+      ),
     );
 
     const quantity = document.createElement("span");
     quantity.className = "quantity";
-    quantity.textContent = String(item.quantity);
-    quantity.setAttribute("aria-label", `Quantity: ${item.quantity}`);
+    quantity.textContent = String(cartItem.quantity);
+    quantity.setAttribute("aria-label", `Quantity: ${cartItem.quantity}`);
 
     actions.append(
       quantity,
-      createButton("+", "button-small", () => changeQuantity(item.id, 1), `Increase ${item.name} quantity`),
-      createButton("Remove", "button-danger", () => removeFromCart(item.id), `Remove ${item.name} from cart`),
+      createButton(
+        "+",
+        "button-small",
+        () => updateQuantity(product.id, cartItem.quantity + 1),
+        `Increase ${product.name} quantity`,
+      ),
+      createButton(
+        "Remove",
+        "button-danger",
+        () => removeFromCart(product.id),
+        `Remove ${product.name} from cart`,
+      ),
     );
 
     row.append(details, actions);
     cartList.append(row);
   });
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  totalElement.textContent = `Total: ${formatPrice(total)}`;
+  totalElement.textContent = `Total: ${formatPrice(getCartTotal())} · Items: ${getCartCount()}`;
 }
 
+function clearCart() {
+  if (state.cart.length === 0) return;
+
+  state.cart = [];
+  saveCart();
+  renderCart();
+  statusElement.textContent = "Your cart has been cleared.";
+}
+
+state.cart = loadCart();
 clearCartButton.addEventListener("click", clearCart);
 
 renderProducts();
