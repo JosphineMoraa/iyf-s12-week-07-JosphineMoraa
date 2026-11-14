@@ -1,7 +1,7 @@
 # Week 7 – JavaScript Best Practices
 
 **Student:** Josphine Moraa  
-**Course:** IYF Weekend Academy, Season 12
+**Course:** IYF Wecan Academy, Season 12
 
 ## Assignment goals
 Refactor the Week 5 To-Do List into small JavaScript modules, persist tasks and the selected filter with localStorage, recover safely from missing or malformed saved data, and add automated tests and code-quality tools.
